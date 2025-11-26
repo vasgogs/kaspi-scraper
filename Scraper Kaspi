@@ -1,0 +1,40 @@
+from playwright.sync_api import sync_playwright
+import pandas as pd
+import time
+
+def scrape_kaspi(url):
+    data = []
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)  # shows browser
+        page = browser.new_page()
+        page.goto(url)
+        page.click("text=Продавцы")   # open sellers tab
+        time.sleep(3)
+
+        while True:
+            sellers = page.query_selector_all("div[data-test='sellerItem']")
+            for s in sellers:
+                try:
+                    name = s.query_selector("a").inner_text()
+                except:
+                    name = ""
+                try:
+                    price = s.query_selector("span:has-text('₸')").inner_text()
+                except:
+                    price = ""
+                data.append({"seller": name, "price": price})
+
+            next_btn = page.query_selector("text=Следующая")
+            if not next_btn or "disabled" in (next_btn.get_attribute("class") or ""):
+                break
+            next_btn.click()
+            time.sleep(2)
+
+        browser.close()
+
+    df = pd.DataFrame(data)
+    df.to_excel("kaspi_prices.xlsx", index=False)
+    print("✅ Done! Saved file kaspi_prices.xlsx")
+
+scrape_kaspi("https://kaspi.kz/shop/p/stada-vitrum-vitamin-s-so-vkusom-apel-sina-tabletki-30-sht-110770320/?c=750000000")
