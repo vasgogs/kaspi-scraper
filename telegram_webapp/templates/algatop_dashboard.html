@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AlgaTop Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/algatop-dashboard.css?v=4" />
+    <script defer src="/static/algatop-dashboard.js?v=4"></script>
+  </head>
+  <body data-updated-at="{{ updated_at }}" data-master-filename="{{ master_filename }}">
+    <div class="ambient ambient--one"></div>
+    <div class="ambient ambient--two"></div>
+    <div class="ambient-grid"></div>
+
+    <main class="shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Local analytics workspace</p>
+          <h1>AlgaTop Market Dashboard</h1>
+          <p class="lede">
+            Один локальный кабинет по твоему портфелю и competitors: графики, таблицы, raw data,
+            category compare и экспорт по выбранным фильтрам.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <article class="hero-card">
+            <span class="hero-card__label">Основной файл</span>
+            <strong id="hero-source">{{ master_filename }}</strong>
+            <span id="hero-source-note" class="hero-card__hint">compare workbook</span>
+          </article>
+          <article class="hero-card">
+            <span class="hero-card__label">Обновлено</span>
+            <strong id="hero-updated">{{ updated_at }}</strong>
+            <span id="hero-status" class="status-badge">Ready</span>
+          </article>
+          <article class="hero-card">
+            <span class="hero-card__label">Открыть напрямую</span>
+            <strong>/algatop</strong>
+            <div class="hero-actions">
+              <button id="reload-data" class="button-secondary" type="button">Reload data</button>
+            </div>
+          </article>
+        </div>
+      </header>
+
+      <section class="filters-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Filters</h2>
+            <p class="panel-note">Период, cohort, категории и экспорт.</p>
+          </div>
+        </div>
+
+        <div class="filters-grid">
+          <label class="field">
+            <span>Start month</span>
+            <select id="filter-start-month"></select>
+          </label>
+          <label class="field">
+            <span>End month</span>
+            <select id="filter-end-month"></select>
+          </label>
+          <label class="field">
+            <span>Cohort</span>
+            <select id="filter-cohort"></select>
+          </label>
+          <label class="field">
+            <span>Level 1</span>
+            <select id="filter-level1"></select>
+          </label>
+          <label class="field">
+            <span>Level 2</span>
+            <select id="filter-level2"></select>
+          </label>
+          <label class="field">
+            <span>Level 3</span>
+            <select id="filter-level3"></select>
+          </label>
+          <label class="field field--wide">
+            <span>Brand contains</span>
+            <input id="filter-brand" type="search" placeholder="Например: Abbott, Bayer, Solgar" />
+          </label>
+          <label class="field field--wide">
+            <span>Search</span>
+            <input id="filter-search" type="search" placeholder="SKU, товар, бренд, категория" />
+          </label>
+        </div>
+
+        <div class="filters-actions">
+          <div class="button-row">
+            <button id="apply-filters" type="button">Apply filters</button>
+            <button id="reset-filters" class="button-secondary" type="button">Reset</button>
+          </div>
+
+          <div class="download-box">
+            <label class="field">
+              <span>Dataset</span>
+              <select id="download-dataset"></select>
+            </label>
+            <label class="field">
+              <span>Format</span>
+              <select id="download-format">
+                <option value="xlsx">xlsx</option>
+                <option value="csv">csv</option>
+              </select>
+            </label>
+            <button id="download-current" class="button-ghost" type="button">Download selected</button>
+          </div>
+        </div>
+      </section>
+
+      <nav class="tabs">
+        <button class="tab is-active" data-tab="overview" type="button">Overview</button>
+        <button class="tab" data-tab="masterfile" type="button">Masterfile</button>
+        <button class="tab" data-tab="sku-analysis" type="button">SKU Analysis</button>
+        <button class="tab" data-tab="category-compare" type="button">Category Compare</button>
+        <button class="tab" data-tab="raw" type="button">Raw Data</button>
+      </nav>
+
+      <section id="tab-overview" class="tab-panel is-active">
+        <div id="overview-metrics" class="metrics-grid"></div>
+
+        <div class="split-grid split-grid--wide">
+          <article class="panel">
+            <div class="panel-head panel-head--wrap">
+              <div>
+                <h2>Revenue Trend</h2>
+                <p class="panel-note">My vs competitors по выбранному периоду.</p>
+              </div>
+              <div class="panel-controls">
+                <label class="field field--compact">
+                  <span>Granularity</span>
+                  <select id="overview-granularity">
+                    <option value="month">Month</option>
+                    <option value="quarter">Quarter</option>
+                    <option value="year">Year</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div id="overview-trend" class="chart-card"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Market Share Trend</h2>
+                <p class="panel-note">Фиксированные референсы: Аптека, Лекарства, Витамины и БАД.</p>
+              </div>
+            </div>
+            <div id="overview-share-trend" class="chart-card"></div>
+          </article>
+        </div>
+
+        <div class="triple-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Top Level 2</h2>
+                <p class="panel-note">Лидеры по выручке в текущем срезе.</p>
+              </div>
+            </div>
+            <div id="overview-level2" class="table-host"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Top Level 3</h2>
+                <p class="panel-note">Где концентрируется выручка.</p>
+              </div>
+            </div>
+            <div id="overview-level3" class="table-host"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Top Brands</h2>
+                <p class="panel-note">По выбранному периоду и фильтрам.</p>
+              </div>
+            </div>
+            <div id="overview-brands" class="table-host"></div>
+          </article>
+        </div>
+
+        <div class="split-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Market Context</h2>
+                <p class="panel-note">Последний месяц выбранного периода.</p>
+              </div>
+            </div>
+            <div id="overview-featured-categories" class="stack-grid"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Gap Snapshot</h2>
+                <p class="panel-note">Где ты сильнее и где конкуренты шире.</p>
+              </div>
+            </div>
+            <div class="double-stack">
+              <div>
+                <h3 class="subhead">Best vs competitors</h3>
+                <div id="overview-best-gap" class="table-host compact-host"></div>
+              </div>
+              <div>
+                <h3 class="subhead">Weak vs competitors</h3>
+                <div id="overview-weak-gap" class="table-host compact-host"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-masterfile" class="tab-panel">
+        <article class="panel">
+          <div class="panel-head panel-head--wrap">
+            <div>
+              <h2>Masterfile</h2>
+              <p class="panel-note">Агрегированный SKU-level слой по выбранному периоду.</p>
+            </div>
+            <div class="panel-controls">
+              <label class="field field--compact">
+                <span>Sort</span>
+                <select id="master-sort">
+                  <option value="revenue_desc">Revenue desc</option>
+                  <option value="qty_desc">Qty desc</option>
+                  <option value="latest_desc">Latest month desc</option>
+                  <option value="reviews_desc">Reviews desc</option>
+                  <option value="name_asc">Name A-Z</option>
+                </select>
+              </label>
+              <label class="field field--compact">
+                <span>Page size</span>
+                <select id="master-page-size">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="masterfile-meta" class="meta-strip"></div>
+          <div id="masterfile-table" class="table-host table-host--wide"></div>
+          <div class="pager">
+            <button id="master-prev" class="button-secondary" type="button">Prev</button>
+            <span id="master-pagination" class="pager-label"></span>
+            <button id="master-next" class="button-secondary" type="button">Next</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="tab-sku-analysis" class="tab-panel">
+        <article class="panel">
+          <div class="panel-head panel-head--wrap">
+            <div>
+              <h2>SKU Analysis</h2>
+              <p class="panel-note">Выбери свой SKU и SKU для сравнения. Динамика цены, выручки и продаж на уровне карточки.</p>
+            </div>
+            <div class="panel-controls">
+              <label class="field field--compact">
+                <span>Granularity</span>
+                <select id="sku-granularity">
+                  <option value="day">Day</option>
+                  <option value="week">Week</option>
+                  <option value="month" selected>Month</option>
+                  <option value="quarter">Quarter</option>
+                  <option value="year">Year</option>
+                </select>
+              </label>
+              <label class="field field--compact field--search">
+                <span>My SKU</span>
+                <input id="sku-my-input" type="search" list="sku-my-list" placeholder="SKU или название" />
+              </label>
+              <label class="field field--compact field--search">
+                <span>Compare SKU</span>
+                <input id="sku-compare-input" type="search" list="sku-compare-list" placeholder="SKU или название" />
+              </label>
+              <button id="sku-apply" type="button">Analyze SKU</button>
+            </div>
+          </div>
+
+          <datalist id="sku-my-list"></datalist>
+          <datalist id="sku-compare-list"></datalist>
+
+          <div id="sku-meta" class="meta-strip"></div>
+          <div id="sku-summary" class="split-grid"></div>
+
+          <div class="split-grid">
+            <article class="panel panel--nested">
+              <div class="panel-head">
+                <div>
+                  <h2>Price History</h2>
+                  <p class="panel-note">Ежедневная динамика цены по выбранным SKU.</p>
+                </div>
+              </div>
+              <div id="sku-price-chart" class="chart-card"></div>
+            </article>
+
+            <article class="panel panel--nested">
+              <div class="panel-head">
+                <div>
+                  <h2>Revenue Trend</h2>
+                  <p class="panel-note">Помесячная выручка по выбранному периоду.</p>
+                </div>
+              </div>
+              <div id="sku-revenue-chart" class="chart-card"></div>
+            </article>
+          </div>
+
+          <div class="split-grid">
+            <article class="panel panel--nested">
+              <div class="panel-head">
+                <div>
+                  <h2>Sales Qty Trend</h2>
+                  <p class="panel-note">Помесячные продажи по SKU.</p>
+                </div>
+              </div>
+              <div id="sku-qty-chart" class="chart-card"></div>
+            </article>
+
+            <article class="panel panel--nested">
+              <div class="panel-head">
+                <div>
+                  <h2>Monthly Compare</h2>
+                  <p class="panel-note">Цена, выручка, продажи и gap по каждому месяцу.</p>
+                </div>
+              </div>
+              <div id="sku-compare-table" class="table-host table-host--wide"></div>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section id="tab-category-compare" class="tab-panel">
+        <article class="panel">
+          <div class="panel-head panel-head--wrap">
+            <div>
+              <h2>Category Compare</h2>
+              <p class="panel-note">Рынок, твоя доля и competitors в выбранном периоде.</p>
+            </div>
+            <div class="panel-controls">
+              <label class="field field--compact">
+                <span>Level</span>
+                <select id="compare-level">
+                  <option value="1">Level 1</option>
+                  <option value="2">Level 2</option>
+                  <option value="3">Level 3</option>
+                </select>
+              </label>
+              <label class="field field--compact field--search">
+                <span>Category search</span>
+                <input id="compare-search" type="search" placeholder="Категория или путь" />
+              </label>
+              <label class="field field--compact">
+                <span>Sort</span>
+                <select id="compare-sort">
+                  <option value="market_desc">Market desc</option>
+                  <option value="my_share_desc">My share desc</option>
+                  <option value="competitor_share_desc">Competitor share desc</option>
+                  <option value="gap_desc">Gap desc</option>
+                  <option value="gap_asc">Gap asc</option>
+                </select>
+              </label>
+              <label class="field field--compact">
+                <span>Granularity</span>
+                <select id="compare-granularity">
+                  <option value="month">Month</option>
+                  <option value="quarter">Quarter</option>
+                  <option value="year">Year</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="compare-chart" class="chart-card"></div>
+          <div id="compare-table" class="table-host table-host--wide"></div>
+          <div class="pager">
+            <button id="compare-prev" class="button-secondary" type="button">Prev</button>
+            <span id="compare-pagination" class="pager-label"></span>
+            <button id="compare-next" class="button-secondary" type="button">Next</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="tab-raw" class="tab-panel">
+        <article class="panel">
+          <div class="panel-head panel-head--wrap">
+            <div>
+              <h2>Raw Data</h2>
+              <p class="panel-note">Помесячные строки по SKU после фильтрации.</p>
+            </div>
+            <div class="panel-controls">
+              <label class="field field--compact">
+                <span>Sort</span>
+                <select id="raw-sort">
+                  <option value="amount_desc">Amount desc</option>
+                  <option value="amount_asc">Amount asc</option>
+                  <option value="qty_desc">Qty desc</option>
+                  <option value="name_asc">Name A-Z</option>
+                </select>
+              </label>
+              <label class="field field--compact">
+                <span>Page size</span>
+                <select id="raw-page-size">
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="raw-meta" class="meta-strip"></div>
+          <div id="raw-table" class="table-host table-host--wide"></div>
+          <div class="pager">
+            <button id="raw-prev" class="button-secondary" type="button">Prev</button>
+            <span id="raw-pagination" class="pager-label"></span>
+            <button id="raw-next" class="button-secondary" type="button">Next</button>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

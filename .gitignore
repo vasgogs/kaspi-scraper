@@ -1,4 +1,48 @@
+# Secrets and local configuration
 .env
+.env.*
+!.env.example
+*.session
+*.session-journal
+
+# Python / local environments
 __pycache__/
-RESULTS/*.xlsx
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+.venv_*/
+
+# OS / editor files
 .DS_Store
+.idea/
+.vscode/
+
+# Runtime logs and local bot/user state
+logs/
+*.log
+user_data/
+state/
+**/state/
+
+# Generated reports, exports and scratch files
+RESULTS/
+**/RESULTS/
+tmp_*
+*.csv
+*.json
+*_scraped*.xlsx
+*_smoke.xlsx
+*.backup_*.xlsx
+*.backup_*.csv
+
+# Large/local input workbooks that should not be published by accident
+*.xlsx
+!telegram_webapp/**/*.xlsx
+!*.example.csv
+!*.example.json
+
+# Local HTML/debug captures
+*_page.html

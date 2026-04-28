@@ -1,0 +1,17 @@
+[Unit]
+Description=AlgaTop public dashboard service
+After=network.target
+
+[Service]
+Type=simple
+User=vasilygogoleff
+Group=vasilygogoleff
+WorkingDirectory=/home/vas/kaspi-scraper/telegram_webapp
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/vas/kaspi-scraper/telegram_webapp/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8010 --workers 2 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=always
+RestartSec=2
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
