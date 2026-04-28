@@ -3325,6 +3325,16 @@ body {
   gap: 14px;
 }
 
+.view {
+  scroll-margin-top: calc(var(--top-bar-h) + 24px);
+}
+
+#campaign-quality-board,
+#home-view.view--campaign-only {
+  padding-top: 48px;
+  padding-bottom: calc(var(--nav-h, 110px) + 160px);
+}
+
 .top-bar {
   background: rgba(248, 250, 255, 0.76);
   border-bottom: 1px solid rgba(60, 60, 67, 0.12);
@@ -3542,6 +3552,10 @@ textarea:focus {
   border: 1px solid rgba(60, 60, 67, 0.14);
   box-shadow: 0 20px 44px rgba(31, 35, 47, 0.16);
   backdrop-filter: blur(26px) saturate(180%);
+  width: min(920px, calc(100% - 32px));
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 .toast {
@@ -3577,4 +3591,229 @@ textarea:focus {
     max-width: 100%;
     white-space: normal;
   }
+
+  #campaign-quality-board,
+  #home-view.view--campaign-only {
+    padding-top: 32px;
+    padding-bottom: calc(var(--nav-h, 96px) + 120px);
+  }
+}
+
+/* Light-theme contrast repair for legacy dark campaign widgets */
+.campaign-quality-hero-panel {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  box-shadow: 0 10px 28px rgba(31, 35, 47, 0.08);
+  color: #1d1d1f;
+}
+
+.campaign-quality-hero-panel .panel-head h2,
+.campaign-quality-hero-panel .panel-head h3,
+.campaign-quality-hero-panel strong,
+.campaign-quality-block-head h3,
+.campaign-quality-row-title,
+.campaign-quality-detail-head h3,
+.home-analysis-detail-head h3,
+.keyword-title,
+.keyword-row-title,
+.status-row strong,
+.priceleaders-sku-seller-name {
+  color: #1d1d1f;
+}
+
+.campaign-quality-hero-panel .panel-note,
+.campaign-quality-metrics .metric-card .meta,
+.campaign-quality-donut-meta span,
+.campaign-quality-leader-head span,
+.campaign-quality-leader-bar span,
+.campaign-quality-block-head .panel-note,
+.campaign-quality-chip small,
+.campaign-quality-row-metrics span,
+.campaign-quality-detail-stat span,
+.home-analysis-metrics .metric-card .meta,
+.home-analysis-row-prices span,
+.home-analysis-detail-stat span,
+.keyword-meta,
+.keyword-row-meta,
+.status-row {
+  color: #6e6e73;
+}
+
+.campaign-quality-donut-card,
+.campaign-quality-block,
+.campaign-quality-chip,
+.campaign-quality-row,
+.campaign-quality-detail,
+.home-analysis-detail,
+.home-analysis-row,
+.keyword-item,
+.keyword-query,
+.keyword-row {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  box-shadow: 0 8px 22px rgba(31, 35, 47, 0.07);
+  color: #1d1d1f;
+}
+
+.campaign-quality-donut-card {
+  background: rgba(248, 250, 255, 0.9);
+}
+
+.campaign-quality-donut {
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.98) 0 55%, transparent 56%),
+    conic-gradient(var(--tone) calc(var(--pct) * 1%), rgba(60, 60, 67, 0.14) 0);
+  box-shadow: inset 0 0 0 1px rgba(60, 60, 67, 0.08);
+}
+
+.campaign-quality-donut__center strong {
+  color: #1d1d1f;
+}
+
+.campaign-quality-donut__center span {
+  color: #3a3a3c;
+}
+
+.campaign-quality-donut-meta strong,
+.campaign-quality-leader-head strong,
+.campaign-quality-leader-bar strong,
+.campaign-quality-chip strong,
+.campaign-quality-row-metrics strong,
+.campaign-quality-detail-stat strong,
+.home-analysis-row-prices strong,
+.home-analysis-detail-stat strong {
+  color: #1d1d1f;
+}
+
+.campaign-quality-leader {
+  background: rgba(255, 255, 255, 0.82);
+  color: #1d1d1f;
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  box-shadow: 0 8px 22px rgba(31, 35, 47, 0.07);
+}
+
+.campaign-quality-leader.ok {
+  border-color: rgba(52, 199, 89, 0.24);
+  background: rgba(52, 199, 89, 0.08);
+}
+
+.campaign-quality-leader.warning {
+  border-color: rgba(255, 159, 10, 0.28);
+  background: rgba(255, 159, 10, 0.08);
+}
+
+.campaign-quality-leader.critical {
+  border-color: rgba(255, 59, 48, 0.24);
+  background: rgba(255, 59, 48, 0.07);
+}
+
+.campaign-quality-leader-score strong {
+  color: #1d1d1f;
+}
+
+.campaign-quality-leader-bar div {
+  background: rgba(60, 60, 67, 0.12);
+}
+
+.campaign-quality-chip--critical,
+.campaign-quality-row--critical {
+  background: rgba(255, 59, 48, 0.07);
+  border-color: rgba(255, 59, 48, 0.25);
+}
+
+.campaign-quality-chip--warning,
+.campaign-quality-row--warning {
+  background: rgba(255, 159, 10, 0.08);
+  border-color: rgba(255, 159, 10, 0.28);
+}
+
+.campaign-quality-chip--ok,
+.campaign-quality-row--ok {
+  background: rgba(52, 199, 89, 0.08);
+  border-color: rgba(52, 199, 89, 0.24);
+}
+
+.campaign-quality-row.is-selected,
+.home-analysis-row.is-selected {
+  border-color: rgba(0, 122, 255, 0.42);
+  box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.14), 0 12px 26px rgba(0, 122, 255, 0.1);
+}
+
+.campaign-quality-row-metrics div,
+.campaign-quality-detail-stat,
+.home-analysis-row-prices div,
+.home-analysis-detail-stat {
+  background: rgba(248, 250, 255, 0.9);
+  border: 1px solid rgba(60, 60, 67, 0.11);
+}
+
+.campaign-quality-detail .download-btn,
+.home-analysis-detail .download-btn {
+  background: #007aff;
+  color: #fff;
+}
+
+.pill,
+.pill--soft,
+.pill--ok,
+.pill--alert,
+.pill--warn,
+.pill--bonus,
+.badge,
+.badge-sku,
+.badge-ok,
+.badge-issues {
+  color: #1d1d1f;
+}
+
+.pill {
+  background: rgba(0, 122, 255, 0.1);
+  border-color: rgba(0, 122, 255, 0.18);
+}
+
+.pill--ok,
+.badge-ok {
+  background: rgba(52, 199, 89, 0.12);
+  color: #17843b;
+}
+
+.pill--alert,
+.badge-issues {
+  background: rgba(255, 59, 48, 0.1);
+  color: #b42318;
+}
+
+.pill--warn {
+  background: rgba(255, 159, 10, 0.13);
+  color: #a05a00;
+}
+
+.pill--soft,
+.badge-sku,
+.pill--bonus {
+  background: rgba(0, 122, 255, 0.1);
+  color: #0056b3;
+}
+
+.nav-label,
+.nav-btn {
+  color: #1d1d1f;
+}
+
+.nav-icon {
+  background: #8e8e93;
+}
+
+.nav-btn.is-active .nav-icon {
+  background: #ff9500;
+  filter: none;
+}
+
+.nav-btn:not(.is-active) .nav-label {
+  opacity: 0.92;
+}
+
+.keyword-empty {
+  background: rgba(248, 250, 255, 0.9);
+  color: #6e6e73;
 }
