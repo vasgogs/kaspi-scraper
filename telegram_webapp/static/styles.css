@@ -3556,6 +3556,8 @@ textarea:focus {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
+  z-index: 120;
+  pointer-events: auto;
 }
 
 .toast {
@@ -3816,4 +3818,257 @@ textarea:focus {
 .keyword-empty {
   background: rgba(248, 250, 255, 0.9);
   color: #6e6e73;
+}
+
+/* Cross-tab readability hardening for the light iOS theme */
+.details-controls,
+.seller-rollup,
+.filter-panel,
+.search-block,
+.suggestions,
+.mission-card,
+.panel-card,
+.summary-table-wrap,
+.reviews-trend-panel,
+.price-dynamics-chart,
+.wolt-map-card,
+.wolt-gap-card,
+.wolt-gap-panel,
+.wolt-pharmacy-row,
+.wolt-item,
+.glovo-branch-card,
+.competitors-board,
+.keyword-row,
+.keyword-item,
+.keyword-query {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(60, 60, 67, 0.14);
+  box-shadow: 0 10px 26px rgba(31, 35, 47, 0.07);
+  color: #1d1d1f;
+}
+
+.details-controls,
+.seller-rollup,
+.filter-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 249, 253, 0.92));
+}
+
+.filter-panel {
+  border-color: rgba(60, 60, 67, 0.14);
+  box-shadow: 0 14px 32px rgba(31, 35, 47, 0.08);
+  backdrop-filter: blur(22px) saturate(170%);
+}
+
+.filter-head h2,
+.search-input,
+.suggestion-item,
+.suggestion-text {
+  color: #1d1d1f;
+}
+
+.search-label,
+.suggestion-kind {
+  color: #6e6e73;
+}
+
+.search-input {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(60, 60, 67, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(60, 60, 67, 0.04);
+}
+
+.search-input::placeholder {
+  color: #777b82;
+  opacity: 1;
+}
+
+.search-input:focus {
+  border-color: rgba(0, 122, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.14);
+}
+
+.suggestions {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(60, 60, 67, 0.16);
+  box-shadow: 0 18px 36px rgba(31, 35, 47, 0.16);
+}
+
+.suggestion-item {
+  background: rgba(248, 250, 255, 0.9);
+  border-color: rgba(60, 60, 67, 0.12);
+}
+
+.app :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  .value,
+  .metric-card strong,
+  .mission-card strong,
+  .panel-head strong,
+  .panel-head h2,
+  .panel-head h3,
+  .summary-table strong,
+  .keyword-title,
+  .keyword-row-title,
+  .status-row strong,
+  .priceleaders-sku-seller-name,
+  .reviews-trend-value,
+  .price-dynamics-value,
+  .price-dynamics-column strong,
+  .wolt-pharmacy-name,
+  .wolt-item-title,
+  .wolt-item-side strong,
+  .wolt-gap-title,
+  .wolt-gap-value,
+  .wolt-gap-stat strong,
+  .wolt-gap-type strong,
+  .glovo-branch-name,
+  .glovo-branch-pill strong,
+  .rollup-chip strong
+) {
+  color: #1d1d1f;
+}
+
+.app :is(
+  .meta,
+  .muted,
+  .panel-note,
+  .field-label,
+  .filters-meta,
+  .update-meta,
+  .file-pill,
+  .keyword-meta,
+  .keyword-row-meta,
+  .status-row,
+  .priceleaders-sku-seller-stats,
+  .reviews-metrics .metric-card .meta,
+  .reviews-trend-head .muted,
+  .reviews-trend-label,
+  .price-dynamics-meta,
+  .price-dynamics-label,
+  .price-dynamics-seller-count,
+  .wolt-pharmacy-stats,
+  .wolt-item-meta,
+  .wolt-gap-sub,
+  .wolt-gap-stats,
+  .glovo-branch-stats,
+  .glovo-branch-pill span,
+  .glovo-branch-pill__meta,
+  .rollup-metrics,
+  #reviews-range-active,
+  #reviews-compare-active,
+  #price-dynamics-context,
+  #price-dynamics-product,
+  #price-dynamics-period,
+  #price-dynamics-sellers-meta
+) {
+  color: #5f6368;
+}
+
+.app :is(
+  .chip,
+  .rollup-chip,
+  .home-analysis-chip,
+  .campaign-quality-chip,
+  .reviews-controls .chip,
+  .reviews-trend-controls .chip,
+  .wolt-filters .chip,
+  .wolt-map-controls .chip
+) {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(60, 60, 67, 0.16);
+  color: #1d1d1f;
+}
+
+.app :is(
+  .chip.is-active,
+  .rollup-chip--active,
+  .home-analysis-chip.is-active,
+  .campaign-quality-chip.is-active,
+  .reviews-controls .chip.is-active,
+  .reviews-trend-controls .chip.is-active,
+  .wolt-filters .chip.is-active,
+  .wolt-map-controls .chip.is-active
+) {
+  background: rgba(0, 122, 255, 0.14);
+  border-color: rgba(0, 122, 255, 0.32);
+  color: #0056b3;
+  box-shadow: 0 10px 24px rgba(0, 122, 255, 0.12);
+}
+
+.reviews-trend-stack,
+.price-dynamics-column,
+.wolt-gap-row,
+.glovo-branch-pill,
+.status-row,
+.rollup-chip {
+  background: rgba(248, 250, 255, 0.92);
+  border-color: rgba(60, 60, 67, 0.12);
+  color: #1d1d1f;
+}
+
+.reviews-trend-fill,
+.price-dynamics-fill,
+.wolt-pharmacy-bar span {
+  opacity: 0.95;
+}
+
+.reviews-trend-bar .reviews-trend-value,
+.reviews-trend-bar.is-focus .reviews-trend-value,
+.reviews-trend-bar.is-compare .reviews-trend-value {
+  color: #1d1d1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.wolt-gap-stat,
+.wolt-gap-type {
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(60, 60, 67, 0.12);
+  color: #1d1d1f;
+}
+
+.wolt-map {
+  background: #f2f4f9;
+}
+
+.wolt-map .leaflet-popup-content-wrapper,
+.wolt-map .leaflet-popup-tip,
+.wolt-map .leaflet-tooltip.wolt-map-tooltip {
+  background: rgba(255, 255, 255, 0.96);
+  color: #1d1d1f;
+  border-color: rgba(60, 60, 67, 0.14);
+}
+
+.wolt-map-popup strong,
+.glovo-popup-list strong {
+  color: #1d1d1f;
+}
+
+.wolt-map-legend,
+.wolt-map-controls {
+  color: #1d1d1f;
+}
+
+.hero--reviews,
+.hero--prices,
+.hero--competitors,
+.hero--wolt,
+.hero--glovo {
+  background:
+    radial-gradient(circle at 15% 0%, rgba(0, 122, 255, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 252, 0.9));
+  color: #1d1d1f;
+}
+
+@media (max-width: 700px) {
+  .app :is(.meta, .muted, .panel-note, .field-label, .filters-meta) {
+    color: #62666d;
+  }
+
+  .bottom-nav {
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
 }
