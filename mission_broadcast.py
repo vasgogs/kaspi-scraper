@@ -396,8 +396,7 @@ async def send_file(
             preview_df = pd.DataFrame()
 
         if preview_df.empty:
-            print(f"ℹ️ {filename}: нет проблемных строк, пропускаем отправку файла и скрина.")
-            return
+            print(f"ℹ️ {filename}: нет проблемных строк, отправляем полный файл без red-alert скрина.")
 
         file_path: Path | None = None
         if send_document:
@@ -405,13 +404,17 @@ async def send_file(
             write_styled_slice(df, file_path)
 
         preview_path: Path | None = None
-        if send_preview:
+        if send_preview and not preview_df.empty:
             try:
                 preview_path = Path(tmpdir) / (filename.replace(".xlsx", "_preview.png"))
                 render_mission_image(preview_df, preview_path)
             except Exception as exc:
                 print(f"⚠️ Could not render preview for {filename}: {exc}")
                 preview_path = None
+
+        if file_path is None and preview_path is None:
+            print(f"ℹ️ {filename}: нечего отправлять для выбранного режима.")
+            return
 
         preview_photo_path: Path | None = None
         if preview_path and preview_path.exists():
